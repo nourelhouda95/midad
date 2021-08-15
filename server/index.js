@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors')
 const mysql = require('mysql');
+
+
 
 
 
@@ -28,6 +30,7 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended : true}))
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/',(req, res) => {
   const titre = req.body.titre
@@ -58,6 +61,42 @@ console.log(nom, prenom,telephone,formation);
 
   let id_inserted_user,id_inserted_formation
 
+
+
+})
+
+
+
+app.get('/getListFormations',  (req, res)=>{
+  let sql = "select * from enum_formation"
+  db.query(sql, (err, rows)=>{
+    if(err) return console.log(err);
+
+    res.send(rows)
+  })
+}
+)
+
+app.get('/fetchcategorie',(req, res)=>{
+  
+})
+
+app.get('/fetchformations',(req, res)=>{
+  const cat = req.body.cat;
+
+  
+})
+
+app.post('/creatinscription', (req, res)=>{
+  const nom = req.body.nom;
+  const prenom = req.body.prenom;
+  const telephone = req.body.telephone
+  const adress = req.body.adress;
+  const dateNes = req.body.dateNes
+  const nivo = req.body.nivo
+  const formation = req.body.formation
+
+
   // first check if user exists in the db if not, add it :
   let sql_user =  "select * from utilisateur where nom = '" + nom + "' and prenom = '" + prenom + "'"
   db.query(sql_user, (err, rows)=>{
@@ -66,7 +105,7 @@ console.log(nom, prenom,telephone,formation);
     if(rows.length == 0){
 
       // create the userId : 
-      let user_id = nom[0]+ prenom[0]+'001'
+      let user_id = nom[0]+ prenom[0]+'002'
      
       let sql_insert = "INSERT INTO utilisateur (id,nom, prenom, numero_tel,type) VALUES (?,?,?,?,0)"
       db.query(sql_insert, [user_id,nom,prenom,telephone],(err1, result)=>{
@@ -117,7 +156,6 @@ console.log(nom, prenom,telephone,formation);
   })
 
 })
-
 
 
 
