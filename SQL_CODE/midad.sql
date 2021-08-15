@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2021 at 11:08 PM
+-- Generation Time: Aug 15, 2021 at 11:05 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -49,6 +49,31 @@ CREATE TABLE `bon` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `enum_formation`
+--
+
+CREATE TABLE `enum_formation` (
+  `id` int(11) NOT NULL,
+  `titre` text NOT NULL,
+  `prix` text NOT NULL,
+  `categorie` varchar(255) DEFAULT NULL,
+  `niveau` varchar(3) DEFAULT NULL,
+  `vlmHor` varchar(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `enum_formation`
+--
+
+INSERT INTO `enum_formation` (`id`, `titre`, `prix`, `categorie`, `niveau`, `vlmHor`) VALUES
+(1, 'Bureautique', '3500', NULL, NULL, NULL),
+(2, 'Francais', '4000', NULL, NULL, NULL),
+(3, 'English', '3800', NULL, NULL, NULL),
+(4, 'Java', '7000', 'Informatique - Programmation', '3', '24');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `etudiant_group`
 --
 
@@ -67,10 +92,19 @@ CREATE TABLE `formation` (
   `id` int(11) NOT NULL,
   `titre_formation` text NOT NULL,
   `prix_formation` text NOT NULL,
-  `date_debut` text NOT NULL,
-  `volume_hor` varchar(3) NOT NULL,
-  `date_fin` text NOT NULL
+  `date_debut` text DEFAULT NULL,
+  `volume_hor` varchar(3) DEFAULT NULL,
+  `date_fin` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `formation`
+--
+
+INSERT INTO `formation` (`id`, `titre_formation`, `prix_formation`, `date_debut`, `volume_hor`, `date_fin`) VALUES
+(14, 'Bureautique', '3500', NULL, NULL, NULL),
+(16, 'Francais', '4000', NULL, NULL, NULL),
+(17, 'Francais', '4000', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -92,11 +126,20 @@ CREATE TABLE `groupe` (
 
 CREATE TABLE `inscription` (
   `id` int(11) NOT NULL,
-  `date_insc` text NOT NULL,
-  `date_deb` text NOT NULL,
+  `date_insc` text DEFAULT NULL,
+  `date_deb` text DEFAULT NULL,
   `id_formation` int(11) DEFAULT NULL,
   `id_user` varchar(5) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `inscription`
+--
+
+INSERT INTO `inscription` (`id`, `date_insc`, `date_deb`, `id_formation`, `id_user`) VALUES
+(4, 'Sat Aug 14 2021 18:12:26 GMT+0200 (Central European Summer Time)', NULL, 14, 'RH001'),
+(6, 'Sat Aug 14 2021 23:10:04 GMT+0200 (Central European Summer Time)', NULL, 16, 'BN002'),
+(7, 'Sun Aug 15 2021 22:30:28 GMT+0200 (Central European Summer Time)', NULL, 17, 'RM002');
 
 -- --------------------------------------------------------
 
@@ -109,12 +152,21 @@ CREATE TABLE `utilisateur` (
   `nom` text NOT NULL,
   `prenom` text NOT NULL,
   `numero_tel` text NOT NULL,
-  `email` text NOT NULL,
-  `password` longtext NOT NULL,
+  `email` text DEFAULT NULL,
+  `password` longtext DEFAULT NULL,
   `type` int(11) NOT NULL,
   `remise` int(11) DEFAULT NULL,
   `cause_remise` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `utilisateur`
+--
+
+INSERT INTO `utilisateur` (`id`, `nom`, `prenom`, `numero_tel`, `email`, `password`, `type`, `remise`, `cause_remise`) VALUES
+('BN002', 'Bahloul', 'Nour el houda', '0796759664', NULL, NULL, 0, NULL, NULL),
+('RH001', 'Rahiche', 'Houssame', '0770722644', NULL, NULL, 0, NULL, NULL),
+('RM002', 'Rahiche', 'Messaoud', '0796759664', NULL, NULL, 0, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -133,6 +185,12 @@ ALTER TABLE `attestation`
 ALTER TABLE `bon`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_user_bon` (`id_user`);
+
+--
+-- Indexes for table `enum_formation`
+--
+ALTER TABLE `enum_formation`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `etudiant_group`
@@ -180,10 +238,16 @@ ALTER TABLE `bon`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `enum_formation`
+--
+ALTER TABLE `enum_formation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `formation`
 --
 ALTER TABLE `formation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `groupe`
@@ -195,7 +259,7 @@ ALTER TABLE `groupe`
 -- AUTO_INCREMENT for table `inscription`
 --
 ALTER TABLE `inscription`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
